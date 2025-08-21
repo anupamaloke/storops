@@ -46,7 +46,8 @@ class UnityFileSystem(UnityResource):
     def create(cls, cli, pool, nas_server, name, size, proto=None,
                is_thin=None, tiering_policy=None, user_cap=False,
                is_compression=None, access_policy=None,
-               locking_policy=None, description=None):
+               locking_policy=None, description=None,
+               is_advanced_dedup_enabled=None):
         pool_clz = storops.unity.resource.pool.UnityPool
         nas_server_clz = storops.unity.resource.nas_server.UnityNasServer
 
@@ -65,7 +66,8 @@ class UnityFileSystem(UnityResource):
             tiering_policy=tiering_policy,
             is_compression=is_compression,
             access_policy=access_policy,
-            locking_policy=locking_policy)
+            locking_policy=locking_policy,
+            is_advanced_dedup_enabled=is_advanced_dedup_enabled)
 
         req_body = cli.make_body(allow_empty=True, name=name,
                                  description=description,
@@ -80,7 +82,8 @@ class UnityFileSystem(UnityResource):
     def modify(self, size=None, is_thin=None, tiering_policy=None,
                user_cap=False, is_compression=None, access_policy=None,
                locking_policy=None, description=None,
-               cifs_fs_parameters=None, snap_schedule_parameters=None):
+               cifs_fs_parameters=None, snap_schedule_parameters=None,
+               is_advanced_dedup_enabled=None):
         sr = self.storage_resource
         if sr is None:
             raise ValueError('storage resource for filesystem {} not found.'
@@ -94,7 +97,8 @@ class UnityFileSystem(UnityResource):
             tiering_policy=tiering_policy,
             is_compression=is_compression,
             access_policy=access_policy,
-            locking_policy=locking_policy)
+            locking_policy=locking_policy,
+            is_advanced_dedup_enabled=is_advanced_dedup_enabled)
 
         params = {}
         if fs_param:
@@ -304,9 +308,11 @@ class UnityFileSystem(UnityResource):
                 allow_empty=True, isCompressionEnabled=is_compression)
 
         @version('>=4.3')  # noqa
-        def make_compression_body(is_compression=None):
+        def make_compression_body(is_compression=None, is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
-                allow_empty=True, isDataReductionEnabled=is_compression)
+                allow_empty=True,
+                isDataReductionEnabled=is_compression,
+                isAdvancedDedupEnabled=is_advanced_dedup_enabled)
 
         access_policy = kwargs.get('access_policy')
         locking_policy = kwargs.get('locking_policy')
