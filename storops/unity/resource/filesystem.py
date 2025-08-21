@@ -308,6 +308,11 @@ class UnityFileSystem(UnityResource):
                 allow_empty=True, isCompressionEnabled=is_compression)
 
         @version('>=4.3')  # noqa
+        def make_compression_body(is_compression=None):
+            return UnityClient.make_body(
+                allow_empty=True, isDataReductionEnabled=is_compression)
+        
+        @version('>=4.5')  # noqa
         def make_compression_body(is_compression=None, is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True,
