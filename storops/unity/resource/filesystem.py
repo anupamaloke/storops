@@ -338,7 +338,8 @@ class UnityFileSystem(UnityResource):
             fs_param['fastVPParameters'] = UnityClient.make_body(
                 allow_empty=True, tieringPolicy=tiering_policy)
 
-        compression_body = make_compression_body(kwargs.get('is_compression'))
+        compression_body = make_compression_body(kwargs.get('is_compression'),
+                                                 kwargs.get('is_advanced_dedup_enabled'))
         fs_param.update(compression_body)
         return fs_param
 
