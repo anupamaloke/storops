@@ -256,7 +256,10 @@ class UnityFileSystem(UnityResource):
                                                  dst_size=None,
                                                  is_dst_thin=None,
                                                  dst_tiering_policy=None,
-                                                 is_dst_compression=None):
+                                                 is_dst_compression=None,
+                                                 no_async_snap_replication=None,
+                                                 hourly_snap_replication_policy=None,
+                                                 daily_snap_replication_policy=None):
         """
         Creates a replication session with destination filesystem provisioning.
 
@@ -278,6 +281,16 @@ class UnityFileSystem(UnityResource):
             destination filesystem.
         :param is_dst_compression: indicates whether destination filesystem is
             compression enabled or not.
+        :param no_async_snap_replication: whether or not snap replication is
+            enabled in asynchronous replication session. When enabled, snap
+            replication is controlled by snap replication policy setting or
+            user action.
+        :param hourly_snap_replication_policy: `UnitySnapReplicationPolicy`
+            object. The policy for replicating hourly scheduled snaps of the
+            source resource.
+        :param daily_snap_replication_policy: `UnitySnapReplicationPolicy`
+            object. The policy for replicating daily scheduled snaps of the
+            source resource.
         :return: created replication session.
         """
 
@@ -298,7 +311,10 @@ class UnityFileSystem(UnityResource):
         return UnityReplicationSession.create_with_dst_resource_provisioning(
             self._cli, self.storage_resource.get_id(),
             dst_resource, max_time_out_of_sync,
-            remote_system=remote_system, name=replication_name)
+            remote_system=remote_system, name=replication_name,
+            no_async_snap_replication=no_async_snap_replication,
+            hourly_snap_replication_policy=hourly_snap_replication_policy,
+            daily_snap_replication_policy=daily_snap_replication_policy)
 
     @staticmethod
     def prepare_fs_parameters(**kwargs):
