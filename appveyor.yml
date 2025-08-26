@@ -7,28 +7,13 @@ environment:
     # The list here is complete (excluding Python 2.6, which
     # isn't covered by this document) at the time of writing.
   - TOXENV: "pep8"
-    PYTHON: "C:\\Python37-x64"
-    DISTUTILS_USE_SDK: "1"
-  - TOXENV: "py36"
-    PYTHON: "C:\\Python36-x64"
-    DISTUTILS_USE_SDK: "1"
-  - TOXENV: "py37"
-    PYTHON: "C:\\Python37-x64"
-    DISTUTILS_USE_SDK: "1"
-  - TOXENV: "py38"
-    PYTHON: "C:\\Python38-x64"
-    DISTUTILS_USE_SDK: "1"
+  - TOXENV: "py39"
+  - TOXENV: "py310"
+  - TOXENV: "py311"
+  - TOXENV: "py312"
 
 install:
-  # We need wheel installed to build wheels
-  - echo Installed Pythons
-  - pip.exe list
-  - dir C:\Python*
-  - "%PYTHON%\\python.exe -m pip install tox"
-  # Try to workaround the issue:
-  # Expected version spec in enum34;python_version<"3.4" # BSD at ;python_version<"3.4" # BSD
-  # Upgrading virtualenv makes the pip inside tox being as latest as possible
-  - "%PYTHON%\\python.exe -m pip install --upgrade pip setuptools virtualenv"
+  - py -m pip install tox
 
 build: off
 
@@ -40,7 +25,7 @@ test_script:
   # Note that you must use the environment variable %PYTHON% to refer to
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python evrsion you want to use on PATH.
-  - "%PYTHON%\\Scripts\\tox.exe"
+  - py -m tox
 
 #on_success:
 #  You can use this step to upload your artifacts to a public website.
