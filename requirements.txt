@@ -8,3 +8,4 @@ retryz # Apache-2.0
 cachez # Apache-2.0
 bitmath # MIT
 urllib3 # MIT
+setuptools
