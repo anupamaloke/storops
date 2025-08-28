@@ -319,20 +319,20 @@ class UnityFileSystem(UnityResource):
 
     @staticmethod
     def prepare_fs_parameters(**kwargs):
-        @version('<4.3')    # noqa: F811
+        @version('<4.3')
         def make_compression_body(is_compression=None,
                                   is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True, isCompressionEnabled=is_compression)
 
-        @version('>=4.3')  # noqa: F811
-        def make_compression_body(is_compression=None,
+        @version('>=4.3')
+        def make_compression_body(is_compression=None,  # noqa: F811
                                   is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True, isDataReductionEnabled=is_compression)
 
-        @version('>=4.5')  # noqa: F811
-        def make_compression_body(is_compression=None,
+        @version('>=4.5')
+        def make_compression_body(is_compression=None,  # noqa: F811
                                   is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True,
