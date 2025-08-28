@@ -248,18 +248,19 @@ class UnityFileSystem(UnityResource):
             snaps = filter(lambda s: not s.is_system_snap, snaps)
         return len(list(snaps)) > 0
 
-    def replicate_with_dst_resource_provisioning(self, max_time_out_of_sync,
-                                                 dst_pool_id,
-                                                 dst_fs_name=None,
-                                                 remote_system=None,
-                                                 replication_name=None,
-                                                 dst_size=None,
-                                                 is_dst_thin=None,
-                                                 dst_tiering_policy=None,
-                                                 is_dst_compression=None,
-                                                 no_async_snap_replication=None,
-                                                 hourly_snap_replication_policy=None,
-                                                 daily_snap_replication_policy=None):
+    def replicate_with_dst_resource_provisioning(
+            self, max_time_out_of_sync,
+            dst_pool_id,
+            dst_fs_name=None,
+            remote_system=None,
+            replication_name=None,
+            dst_size=None,
+            is_dst_thin=None,
+            dst_tiering_policy=None,
+            is_dst_compression=None,
+            no_async_snap_replication=None,
+            hourly_snap_replication_policy=None,
+            daily_snap_replication_policy=None):
         """
         Creates a replication session with destination filesystem provisioning.
 
@@ -318,18 +319,21 @@ class UnityFileSystem(UnityResource):
 
     @staticmethod
     def prepare_fs_parameters(**kwargs):
-        @version('<4.3')
-        def make_compression_body(is_compression=None):
+        @version('<4.3')    # noqa: F811
+        def make_compression_body(is_compression=None,
+                                  is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True, isCompressionEnabled=is_compression)
 
-        @version('>=4.3')  # noqa
-        def make_compression_body(is_compression=None):
+        @version('>=4.3')  # noqa: F811
+        def make_compression_body(is_compression=None,
+                                  is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True, isDataReductionEnabled=is_compression)
-        
-        @version('>=4.5')  # noqa
-        def make_compression_body(is_compression=None, is_advanced_dedup_enabled=None):
+
+        @version('>=4.5')  # noqa: F811
+        def make_compression_body(is_compression=None,
+                                  is_advanced_dedup_enabled=None):
             return UnityClient.make_body(
                 allow_empty=True,
                 isDataReductionEnabled=is_compression,
@@ -359,8 +363,9 @@ class UnityFileSystem(UnityResource):
             fs_param['fastVPParameters'] = UnityClient.make_body(
                 allow_empty=True, tieringPolicy=tiering_policy)
 
-        compression_body = make_compression_body(kwargs.get('is_compression'),
-                                                 kwargs.get('is_advanced_dedup_enabled'))
+        compression_body = make_compression_body(
+            kwargs.get('is_compression'),
+            kwargs.get('is_advanced_dedup_enabled'))
         fs_param.update(compression_body)
         return fs_param
 
